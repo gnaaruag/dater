@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fffcf5;
+  --ink: #1a1a1a;
+  --pink: #f5a0b8;
+  --hot-pink: #e84b8a;
+  --orange: #f28a2e;
+  --red: #d63c2f;
+  --green: #2d8f4e;
+  --blue: #4a9fd6;
+  --yellow: #f7c948;
+  --cream: #fffcf5;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-pink: var(--pink);
+  --color-hot-pink: var(--hot-pink);
+  --color-dater-orange: var(--orange);
+  --color-dater-red: var(--red);
+  --color-dater-green: var(--green);
+  --color-dater-blue: var(--blue);
+  --color-dater-yellow: var(--yellow);
+  --color-cream: var(--cream);
+  --font-sans: var(--font-eb-garamond);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  font-size: 1.05rem;
+  padding: 10px 14px;
+  border: 2.5px solid var(--ink);
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--orange);
+  box-shadow: 3px 3px 0 var(--yellow);
+}
+
+/* Prevent iOS zoom on input focus */
+@supports (-webkit-touch-callout: none) {
+  input[type="text"],
+  input[type="date"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Modal slide-up animation */
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease;
+}
+
+/* Hide native date input chrome */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+/* Scroll picker styles */
+.scroll-picker {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+}
+
+.scroll-picker-inner {
+  overflow-y: auto;
+  height: 100%;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.scroll-picker-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-picker-item {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  font-size: 1.1rem;
+  color: var(--ink);
+  opacity: 0.35;
+  transition: opacity 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scroll-picker-item.active {
+  opacity: 1;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
