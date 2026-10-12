@@ -20,4 +20,4 @@ export default function OfflineSupport() {
     };
   }, []);
   return null;
-  }
+}
