@@ -41,7 +41,8 @@ The app already requests persistent storage where the browser supports it.
 ## Offline regression tests
 
 ```sh
-npx playwright install --with-deps chromium webkit
+npm --prefix tests ci
+npm --prefix tests exec -- playwright install --with-deps chromium webkit
 npm run test:offline
 ```
 
