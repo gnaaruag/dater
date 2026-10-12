@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# dater
 
-## Getting Started
+A local-only date-range tracker. Daters and notes stay in IndexedDB on your device.
 
-First, run the development server:
+## Development
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production and offline support
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Next.js app is statically exported to `out/`. The build then generates
+`out/sw.js` from **every exported file**, including the HTML shell, JavaScript
+chunks, CSS, self-hosted EB Garamond fonts, manifest, and icons. This keeps the
+existing design and requires no application server or runtime CDN.
 
-## Learn More
+Visit once over HTTPS (or localhost) and leave the page open until the service
+worker finishes installing. It caches the whole build before taking control.
+After that, reloads and fresh launches of `/` work without a network, including
+URLs with query strings. Creating/deleting daters and adding/deleting notes
+remain local. Development mode does not register a worker.
 
-To learn more about Next.js, take a look at the following resources:
+Each build gets a content-derived cache name. Updates install into a separate
+cache and wait until the old tabs close, so an open app never mixes its shell
+with a different build's chunks. On activation, the worker removes only older
+`dater-shell-` caches. It never changes IndexedDB. Reconnecting checks for a
+worker update.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+There is no time-based cache expiry. A first-ever visit still needs internet,
+and no website can promise storage forever: clearing site data, uninstalling,
+private browsing, or browser/OS eviction can remove the shell and local data.
+The app already requests persistent storage where the browser supports it.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Offline regression tests
 
-## Deploy on Vercel
+```sh
+npx playwright install --with-deps chromium webkit
+npm run test:offline
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Tests serve the actual production export, wait for service-worker control, and
+assert that every exported asset was cached. They create a dater through the UI,
+disable the network (and Chromium's HTTP cache), reload, add a note, close and
+reopen a tab offline, create/delete another dater offline, and verify data after
+another reload. Mobile-sized screenshots are saved under `test-results/`.
