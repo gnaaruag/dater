@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "next build && node scripts/generate-sw.mjs",
+    "start": "node scripts/serve.mjs",
+    "lint": "eslint",
+    "test:offline": "npm run build && npm --prefix tests ci && npm --prefix tests test --"
   },
   "dependencies": {
     "idb": "^8.0.3",
