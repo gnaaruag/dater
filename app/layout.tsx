@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { EB_Garamond } from "next/font/google";
 import "./globals.css";
+import OfflineSupport from "@/components/OfflineSupport";
 
 const ebGaramond = EB_Garamond({
   variable: "--font-eb-garamond",
@@ -41,6 +42,7 @@ export default function RootLayout({
       </head>
       <body className={ebGaramond.variable}>
         {children}
+        <OfflineSupport />
       </body>
     </html>
   );
