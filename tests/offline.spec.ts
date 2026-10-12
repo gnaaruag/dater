@@ -25,7 +25,7 @@ test("cold offline launch preserves daters and supports note CRUD", async ({ pag
     }
     return result;
   }
-  expect(cached.sort()).toEqual((await files("out")).filter((path) => path !== "/sw.js").sort());
+  expect(cached.sort()).toEqual((await files(new URL("../out", import.meta.url).pathname)).filter((path) => path !== "/sw.js").sort());
   expect(cached.some((path) => path.endsWith(".woff2"))).toBe(true);
   // Seed existing data through the actual app UI before leaving the network.
   await page.locator("header button").click();
