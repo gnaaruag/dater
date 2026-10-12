@@ -1,0 +1,6 @@
+{
+  "name": "dater-offline-tests",
+  "private": true,
+  "scripts": { "test": "playwright test --config ../playwright.config.ts" },
+  "devDependencies": { "@playwright/test": "1.64.0" }
+}
